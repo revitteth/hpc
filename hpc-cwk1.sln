@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mat_mat_mul", "mat_mat_mul\mat_mat_mul.vcxproj", "{9F4AAD8D-03BF-42D4-8FB5-7C83242C8AB7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fft", "fft\fft.vcxproj", "{CD2DA033-2C35-4C07-9BB4-04FFB17A2059}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "graph_distance", "graph_distance\graph_distance.vcxproj", "{847D5AAF-8478-4F98-96DD-4D3CCCC2EA3C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9F4AAD8D-03BF-42D4-8FB5-7C83242C8AB7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9F4AAD8D-03BF-42D4-8FB5-7C83242C8AB7}.Debug|Win32.Build.0 = Debug|Win32
+		{9F4AAD8D-03BF-42D4-8FB5-7C83242C8AB7}.Release|Win32.ActiveCfg = Release|Win32
+		{9F4AAD8D-03BF-42D4-8FB5-7C83242C8AB7}.Release|Win32.Build.0 = Release|Win32
+		{CD2DA033-2C35-4C07-9BB4-04FFB17A2059}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CD2DA033-2C35-4C07-9BB4-04FFB17A2059}.Debug|Win32.Build.0 = Debug|Win32
+		{CD2DA033-2C35-4C07-9BB4-04FFB17A2059}.Release|Win32.ActiveCfg = Release|Win32
+		{CD2DA033-2C35-4C07-9BB4-04FFB17A2059}.Release|Win32.Build.0 = Release|Win32
+		{847D5AAF-8478-4F98-96DD-4D3CCCC2EA3C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{847D5AAF-8478-4F98-96DD-4D3CCCC2EA3C}.Debug|Win32.Build.0 = Debug|Win32
+		{847D5AAF-8478-4F98-96DD-4D3CCCC2EA3C}.Release|Win32.ActiveCfg = Release|Win32
+		{847D5AAF-8478-4F98-96DD-4D3CCCC2EA3C}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
