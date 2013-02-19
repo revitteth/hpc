@@ -57,8 +57,10 @@ public:
 	/*! Randomise (poorly) the matrix to uniform values in [0,1] */
 	void randomise()
 	{
-		for(unsigned r=0;r<rows;r++){
-			for(unsigned c=0;c<cols;c++){
+		for(unsigned r=0;r<rows;r++)
+		{
+			for(unsigned c=0;c<cols;c++)
+			{
 				// Note: don't use rand() in real code, this is for compactness.
 				at(r,c) = rand() / (double)RAND_MAX - 0.5;
 			}
@@ -67,9 +69,11 @@ public:
 	
 	void dump(std::ostream &dst) const
 	{
-		for(unsigned r=0;r<rows;r++){
+		for(unsigned r=0;r<rows;r++)
+		{
 			dst<<"[";
-			for(unsigned c=0;c<cols;c++){
+			for(unsigned c=0;c<cols;c++)
+			{
 				if(c!=0)
 					dst<<" , ";
 				dst<<at(r,c);
@@ -81,13 +85,11 @@ public:
 };
 
 /*! This is a matrix which allocates storage as well (not just a view) */
-struct local_mat_t
-	: public mat_t
+struct local_mat_t : public mat_t
 {
 	std::vector<double> storage;
 	
-	local_mat_t(unsigned height, unsigned width)
-		: storage(width*height, 0.0)
+	local_mat_t(unsigned height, unsigned width) : storage(width*height, 0.0)
 	{
 		rows=height;
 		cols=width;
