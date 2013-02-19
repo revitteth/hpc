@@ -14,12 +14,18 @@
     <ClCompile Include="..\src\mat_mat_mul_run.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\mat_mat_mul_run_tbb.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\mat_mat_mul.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\mat_t.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mat_mat_mul_tbb.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

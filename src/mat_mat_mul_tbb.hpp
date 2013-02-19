@@ -1,7 +1,10 @@
-#ifndef mat_mat_mul_hpp
-#define mat_mat_mul_hpp
+#ifndef mat_mat_mul_tbb_hpp
+#define mat_mat_mul_tbb_hpp
 
+#include "tbb/parallel_for.h"
 #include "mat_t.hpp"
+
+using namespace tbb;
 
 void mat_mat_mul(mat_t dst,	const mat_t a, const mat_t b)
 {
