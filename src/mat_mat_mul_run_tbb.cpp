@@ -1,4 +1,7 @@
 #include "mat_mat_mul_tbb.hpp"
+#include "tbb/tick_count.h"
+
+using namespace tbb;
 
 int main(int argc, char *argv[])
 {
@@ -17,9 +20,20 @@ int main(int argc, char *argv[])
 	B.randomise();
 	B.dump(std::cout);
 	
+	// Collect start time
+	tick_count start = tick_count::now();
+
 	mat_mat_mul(R, A, B);
-	
+
+	// Collect end time
+	tick_count end = tick_count::now();
+
 	R.dump(std::cout);
 	
+	std::cout << (end - start).seconds();
+
+	// hold console open
+	std::cin.get();
+
 	return 0;
 }
