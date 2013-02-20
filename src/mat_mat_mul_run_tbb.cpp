@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
 	R.dump(std::cout);
 	
 	std::cout << (end - start).seconds();
+	std::cout << " seconds";
 
 	// hold console open
 	std::cin.get();
