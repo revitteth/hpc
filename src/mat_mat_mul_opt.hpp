@@ -62,8 +62,8 @@ class MatMatMulOpt : public task
 							acc += a.at(row,i) * b.at(i,col);
 						}
 						dst.at(row,col) = acc;
-					}*/
-				}
+					}
+				}*/
 			}
 			else
 			{
