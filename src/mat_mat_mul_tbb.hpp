@@ -7,7 +7,7 @@
 
 using namespace tbb;
 
-class MatMatMul : public tbb::task 
+class MatMatMulTbb : public tbb::task 
 {
 	private : 
 		mat_t dst;
@@ -15,7 +15,7 @@ class MatMatMul : public tbb::task
 		mat_t b;
 
 	public : 
-		MatMatMul(mat_t dst, const mat_t a, const mat_t b) : dst(dst), a(a), b(b) {}
+		MatMatMulTbb(mat_t dst, const mat_t a, const mat_t b) : dst(dst), a(a), b(b) {}
 
 		task* execute(void)
 		{
@@ -40,15 +40,15 @@ class MatMatMul : public tbb::task
 
 				local_mat_t right(dst.rows, dst.cols);
 		
-				tasks.push_back(*new (task::allocate_child()) MatMatMul(dst.quad(0,0), a.quad(0,0), b.quad(0,0)));
-				tasks.push_back(*new (task::allocate_child()) MatMatMul(dst.quad(0,1), a.quad(0,0), b.quad(0,1)));
-				tasks.push_back(*new (task::allocate_child()) MatMatMul(dst.quad(1,0), a.quad(1,0), b.quad(0,0)));
-				tasks.push_back(*new (task::allocate_child()) MatMatMul(dst.quad(1,1), a.quad(1,0), b.quad(0,1)));
+				tasks.push_back(*new (task::allocate_child()) MatMatMulTbb(dst.quad(0,0), a.quad(0,0), b.quad(0,0)));
+				tasks.push_back(*new (task::allocate_child()) MatMatMulTbb(dst.quad(0,1), a.quad(0,0), b.quad(0,1)));
+				tasks.push_back(*new (task::allocate_child()) MatMatMulTbb(dst.quad(1,0), a.quad(1,0), b.quad(0,0)));
+				tasks.push_back(*new (task::allocate_child()) MatMatMulTbb(dst.quad(1,1), a.quad(1,0), b.quad(0,1)));
 		
-				tasks.push_back(*new (task::allocate_child()) MatMatMul(right.quad(0,0), a.quad(0,1), b.quad(1,0)));
-				tasks.push_back(*new (task::allocate_child()) MatMatMul(right.quad(0,1), a.quad(0,1), b.quad(1,1)));
-				tasks.push_back(*new (task::allocate_child()) MatMatMul(right.quad(1,0), a.quad(1,1), b.quad(1,0)));
-				tasks.push_back(*new (task::allocate_child()) MatMatMul(right.quad(1,1), a.quad(1,1), b.quad(1,1)));
+				tasks.push_back(*new (task::allocate_child()) MatMatMulTbb(right.quad(0,0), a.quad(0,1), b.quad(1,0)));
+				tasks.push_back(*new (task::allocate_child()) MatMatMulTbb(right.quad(0,1), a.quad(0,1), b.quad(1,1)));
+				tasks.push_back(*new (task::allocate_child()) MatMatMulTbb(right.quad(1,0), a.quad(1,1), b.quad(1,0)));
+				tasks.push_back(*new (task::allocate_child()) MatMatMulTbb(right.quad(1,1), a.quad(1,1), b.quad(1,1)));
 				
 				set_ref_count(9); // number of tasks on list + root task
 
@@ -68,7 +68,7 @@ class MatMatMul : public tbb::task
 
 void mat_mat_mul(mat_t dst, mat_t a, mat_t b)
 {
-	MatMatMul &taskRoot = *new (task::allocate_root()) MatMatMul(dst,a,b);
+	MatMatMulTbb &taskRoot = *new (task::allocate_root()) MatMatMulTbb(dst,a,b);
 	task::spawn_root_and_wait(taskRoot);
 }
 
