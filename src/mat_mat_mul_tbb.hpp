@@ -7,10 +7,15 @@
 
 using namespace tbb;
 
-class MatMatMulWorker : public tbb::task 
+class MatMatMul : public tbb::task 
 {
-	public:
-		MatMatMulWorker(mat_t dst, const mat_t a, const mat_t b) : dst(dst), a(a), b(b) {}
+	private : 
+		mat_t dst;
+		mat_t a;
+		mat_t b;
+
+	public : 
+		MatMatMul(mat_t dst, const mat_t a, const mat_t b) : dst(dst), a(a), b(b) {}
 
 		task* execute(void)
 		{
@@ -35,16 +40,20 @@ class MatMatMulWorker : public tbb::task
 
 				local_mat_t right(dst.rows, dst.cols);
 		
-				tasks.push_back(*new (task::allocate_child()) MatMatMulWorker(dst.quad(0,0), a.quad(0,0), b.quad(0,0));
-				tasks.push_back(*new (task::allocate_child()) MatMatMulWorker(dst.quad(0,1), a.quad(0,0), b.quad(0,1));
-				tasks.push_back(*new (task::allocate_child()) MatMatMulWorker(dst.quad(1,0), a.quad(1,0), b.quad(0,0));
-				tasks.push_back(*new (task::allocate_child()) MatMatMulWorker(dst.quad(1,1), a.quad(1,0), b.quad(0,1));
+				tasks.push_back(*new (task::allocate_child()) MatMatMul(dst.quad(0,0), a.quad(0,0), b.quad(0,0)));
+				tasks.push_back(*new (task::allocate_child()) MatMatMul(dst.quad(0,1), a.quad(0,0), b.quad(0,1)));
+				tasks.push_back(*new (task::allocate_child()) MatMatMul(dst.quad(1,0), a.quad(1,0), b.quad(0,0)));
+				tasks.push_back(*new (task::allocate_child()) MatMatMul(dst.quad(1,1), a.quad(1,0), b.quad(0,1)));
 		
-				tasks.push_back(*new (task::allocate_child()) MatMatMulWorker(right.quad(0,0), a.quad(0,1), b.quad(1,0));
-				tasks.push_back(*new (task::allocate_child()) MatMatMulWorker(right.quad(0,1), a.quad(0,1), b.quad(1,1));
-				tasks.push_back(*new (task::allocate_child()) MatMatMulWorker(right.quad(1,0), a.quad(1,1), b.quad(1,0));
-				tasks.push_back(*new (task::allocate_child()) MatMatMulWorker(right.quad(1,1), a.quad(1,1), b.quad(1,1));
-		
+				tasks.push_back(*new (task::allocate_child()) MatMatMul(right.quad(0,0), a.quad(0,1), b.quad(1,0)));
+				tasks.push_back(*new (task::allocate_child()) MatMatMul(right.quad(0,1), a.quad(0,1), b.quad(1,1)));
+				tasks.push_back(*new (task::allocate_child()) MatMatMul(right.quad(1,0), a.quad(1,1), b.quad(1,0)));
+				tasks.push_back(*new (task::allocate_child()) MatMatMul(right.quad(1,1), a.quad(1,1), b.quad(1,1)));
+				
+				set_ref_count(9); // number of tasks on list + root task
+
+				spawn_and_wait_for_all(tasks);
+
 				for(unsigned row=0;row<dst.rows;row++)
 				{
 					for(unsigned col=0;col<dst.cols;col++)
@@ -53,6 +62,14 @@ class MatMatMulWorker : public tbb::task
 					}
 				}
 			}
+			return NULL;
+		}
+};
+
+void mat_mat_mul(mat_t dst, mat_t a, mat_t b)
+{
+	MatMatMul &taskRoot = *new (task::allocate_root()) MatMatMul(dst,a,b);
+	task::spawn_root_and_wait(taskRoot);
 }
 
 #endif
