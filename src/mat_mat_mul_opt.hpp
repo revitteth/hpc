@@ -13,24 +13,23 @@ class InnerCols
 	private :
 		mat_t dst;
 		mat_t a, b;
-		unsigned row;
 
 	public :
 
-		InnerCols(mat_t dst, mat_t a, mat_t b, unsigned row) : dst(dst), a(a), b(b), row(row) {}
+		InnerCols(mat_t dst, mat_t a, mat_t b) : dst(dst), a(a), b(b) {}
 
 		void operator() (const blocked_range<size_t>& r)
 		{
-			for(size_t i = r.begin(); i != r.end(); ++i)
+			for(size_t x = r.begin(); x != r.end(); ++x)
 			{
 				for(unsigned col=0;col<dst.cols;col++)
 				{
 					double acc=0.0;
 					for(unsigned i=0;i<a.cols;i++)
 					{
-						acc += a.at(row,i) * b.at(i,col);
+						acc += a.at(x,i) * b.at(i,col);
 					}
-					dst.at(row,col) = acc;
+					dst.at(x,col) = acc;
 				}
 			}
 		}
@@ -51,7 +50,9 @@ class MatMatMulOpt : public task
 		{
 			if((dst.rows==1) || (dst.cols==1))
 			{
-				for(unsigned row=0;row<dst.rows;row++)
+				parallel_for(blocked_range<size_t>(0, dst.rows), InnerCols(dst, a, b));
+
+				/*for(unsigned row=0;row<dst.rows;row++)
 				{
 					for(unsigned col=0;col<dst.cols;col++)
 					{
@@ -61,7 +62,7 @@ class MatMatMulOpt : public task
 							acc += a.at(row,i) * b.at(i,col);
 						}
 						dst.at(row,col) = acc;
-					}
+					}*/
 				}
 			}
 			else
