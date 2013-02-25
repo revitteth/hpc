@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 	// Collect end time
 	tick_count end = tick_count::now();
 
-	//R.dump(std::cout);
+	R.dump(std::cout);
 	
 	std::cout << (end - start).seconds();
 	std::cout << " seconds";

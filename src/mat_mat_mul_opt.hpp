@@ -8,7 +8,7 @@
 
 using namespace tbb;
 
-class InnerCols
+class OuterRows
 {
 	private :
 		mat_t dst;
@@ -16,7 +16,7 @@ class InnerCols
 
 	public :
 
-		InnerCols(mat_t dst, mat_t a, mat_t b) : dst(dst), a(a), b(b) {}
+		OuterRows(mat_t dst, mat_t a, mat_t b) : dst(dst), a(a), b(b) {}
 
 		void operator() (const blocked_range<size_t>& r)
 		{
@@ -50,7 +50,7 @@ class MatMatMulOpt : public task
 		{
 			if((dst.rows==1) || (dst.cols==1))
 			{
-				parallel_for(blocked_range<size_t>(0, dst.rows), InnerCols(dst, a, b));
+				parallel_for(blocked_range<size_t>(0, dst.rows), OuterRows(dst, a, b));
 
 				/*for(unsigned row=0;row<dst.rows;row++)
 				{
