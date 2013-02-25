@@ -18,6 +18,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\mat_mat_mul.hpp" />
+    <ClInclude Include="..\src\mat_mat_mul_opt.hpp" />
     <ClInclude Include="..\src\mat_mat_mul_tbb.hpp" />
     <ClInclude Include="..\src\mat_t.hpp" />
   </ItemGroup>

@@ -15,10 +15,10 @@ int main(int argc, char *argv[])
 	local_mat_t R(n,n);
 	
 	A.randomise();
-	A.dump(std::cout);
+	//A.dump(std::cout);
 	
 	B.randomise();
-	B.dump(std::cout);
+	//B.dump(std::cout);
 	
 	// Collect start time
 	tick_count start = tick_count::now();
@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 	// Collect end time
 	tick_count end = tick_count::now();
 
-	R.dump(std::cout);
+	//R.dump(std::cout);
 	
 	std::cout << (end - start).seconds();
 	std::cout << " seconds";
