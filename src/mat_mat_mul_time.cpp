@@ -19,10 +19,10 @@ int main(int argc, char *argv[])
 	local_mat_t R_orig(n,n), R_tbb(n,n), R_opt(n,n);
 	
 	A.randomise();
-	A.dump(std::cout);
+	//A.dump(std::cout);
 	
 	B.randomise();
-	B.dump(std::cout);
+	//B.dump(std::cout);
 	
 	// original code
 	tick_count start_orig = tick_count::now();
@@ -56,14 +56,13 @@ int main(int argc, char *argv[])
 				cout << "error in optimised tbb code" << endl;
 			}
 		}
-
 	}
 
 	//R.dump(cout);
 	
-	cout << original_time << " seconds" << endl;
-	cout << tbb_time << " seconds" << endl;
-	cout << opt_time << " seconds" << endl;
+	cout << original_time << endl;
+	cout << tbb_time << endl;
+	cout << opt_time << endl;
 
 
 	// hold console open
