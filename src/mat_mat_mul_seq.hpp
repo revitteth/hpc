@@ -1,5 +1,5 @@
-#ifndef mat_mat_mul_tbb_seq
-#define mat_mat_mul_tbb_seq
+#ifndef mat_mat_mul_seq_hpp
+#define mat_mat_mul_seq_hpp
 
 #include "mat_t.hpp"
 

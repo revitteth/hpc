@@ -37,9 +37,6 @@
     <ClInclude Include="..\src\mat_mat_mul_opt.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Tester.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\mat_mat_mul_seq.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>

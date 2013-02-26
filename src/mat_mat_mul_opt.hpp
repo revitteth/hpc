@@ -1,5 +1,5 @@
-#ifndef mat_mat_mul_tbb_opt
-#define mat_mat_mul_tbb_opt
+#ifndef mat_mat_mul_opt_hpp
+#define mat_mat_mul_opt_hpp
 
 #include "mat_t.hpp"
 #include "tbb/tbb.h"
@@ -56,7 +56,7 @@ class MatMatMulOpt : public task
 		// Task containing functionality
 		task* execute(void)
 		{
-			if((dst.rows==1) || (dst.cols==1))
+			if((dst.rows<=128) || (dst.cols<=128))
 			{
 				for(unsigned row=0;row<dst.rows;row++)
 				{
