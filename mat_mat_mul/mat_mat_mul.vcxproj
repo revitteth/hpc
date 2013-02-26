@@ -16,13 +16,14 @@
     <ClCompile Include="..\src\mat_mat_mul_run_tbb.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MaxSpeed</Optimization>
     </ClCompile>
-    <ClCompile Include="mat_mat_mul_time.cpp" />
+    <ClCompile Include="..\src\mat_mat_mul_time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\mat_mat_mul.hpp" />
     <ClInclude Include="..\src\mat_mat_mul_opt.hpp" />
     <ClInclude Include="..\src\mat_mat_mul_tbb.hpp" />
     <ClInclude Include="..\src\mat_t.hpp" />
+    <ClInclude Include="..\src\Tester.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9F4AAD8D-03BF-42D4-8FB5-7C83242C8AB7}</ProjectGuid>

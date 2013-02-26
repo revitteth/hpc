@@ -6,28 +6,22 @@
 
 using namespace tbb;
 
-struct ParallelTing
+struct ParallelOuterLoop
 {
 	private :
-		mat_t dst, a, b;
+		mat_t *dst, *right;
 
 	public :
 
-		ParallelTing(mat_t dst, mat_t a, mat_t b) : dst(dst), a(a), b(b) {}
+		ParallelOuterLoop(mat_t *dst, mat_t *right) : dst(dst), right(right) {}
 
 		void operator() (const blocked_range<size_t>& r) const
 		{
-			mat_t newDst = dst;
-			for(size_t x = r.begin(); x != r.end(); ++x)
+			for(size_t row = r.begin(); row != r.end(); ++row)
 			{
-				for(unsigned col=0;col<dst.cols;col++)
+				for(unsigned col=0;col<dst->cols;col++)
 				{
-					double acc=0.0;
-					for(unsigned i=0;i<a.cols;i++)
-					{
-						acc += a.at(x,i) * b.at(i,col);
-					}
-					newDst.at(x,col) = acc;
+					dst->at(row,col) += right->at(row,col);
 				}
 			}
 		}
@@ -48,10 +42,18 @@ class MatMatMulOpt : public task
 		{
 			if((dst.rows==1) || (dst.cols==1))
 			{
-				// need to say here if rows > certain size (parallel the outer loop)
-				// if columns > certain size (parallel the innter loop)
-				// should never need to do both due to condition of if statement
-				parallel_for(blocked_range<size_t>(0, dst.rows), ParallelTing(dst, a, b));
+				for(unsigned row=0;row<dst.rows;row++)
+				{
+					for(unsigned col=0;col<dst.cols;col++)
+					{
+						double acc=0.0;
+						for(unsigned i=0;i<a.cols;i++)
+						{
+							acc += a.at(row,i) * b.at(i,col);
+						}
+						dst.at(row,col) = acc;
+					}
+				}
 			}
 			else
 			{
@@ -72,15 +74,8 @@ class MatMatMulOpt : public task
 				
 				spawn_and_wait_for_all(tasks);
 
-
 				// paralellise both these as they could both be large (use same if statements as above!)
-				for(unsigned row=0;row<dst.rows;row++)
-				{
-					for(unsigned col=0;col<dst.cols;col++)
-					{
-						dst.at(row,col) += right.at(row,col);
-					}
-				}
+				parallel_for(blocked_range<size_t>(0, dst.rows), ParallelOuterLoop(&dst, &right));
 			}
 			return NULL;
 		}
