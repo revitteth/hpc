@@ -2,8 +2,7 @@
 #define mat_mat_mul_tbb_hpp
 
 #include "mat_t.hpp"
-#include "tbb/task.h"
-#include "tbb/task_scheduler_init.h"
+#include "tbb\tbb.h"
 
 using namespace tbb;
 

@@ -17,6 +17,12 @@
     <ClCompile Include="..\src\mat_mat_mul_run_tbb.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="mat_mat_mul_time.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mat_mat_mul_run_opt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\mat_mat_mul.hpp">

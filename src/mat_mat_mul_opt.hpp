@@ -3,23 +3,21 @@
 
 #include "mat_t.hpp"
 #include "tbb/tbb.h"
-#include "tbb/task.h"
-#include "tbb/task_scheduler_init.h"
 
 using namespace tbb;
 
-class OuterRows
+struct ParallelTing
 {
 	private :
-		mat_t dst;
-		mat_t a, b;
+		mat_t dst, a, b;
 
 	public :
 
-		OuterRows(mat_t dst, mat_t a, mat_t b) : dst(dst), a(a), b(b) {}
+		ParallelTing(mat_t dst, mat_t a, mat_t b) : dst(dst), a(a), b(b) {}
 
-		void operator() (const blocked_range<size_t>& r)
+		void operator() (const blocked_range<size_t>& r) const
 		{
+			mat_t newDst = dst;
 			for(size_t x = r.begin(); x != r.end(); ++x)
 			{
 				for(unsigned col=0;col<dst.cols;col++)
@@ -29,7 +27,7 @@ class OuterRows
 					{
 						acc += a.at(x,i) * b.at(i,col);
 					}
-					dst.at(x,col) = acc;
+					newDst.at(x,col) = acc;
 				}
 			}
 		}
@@ -53,7 +51,7 @@ class MatMatMulOpt : public task
 				// need to say here if rows > certain size (parallel the outer loop)
 				// if columns > certain size (parallel the innter loop)
 				// should never need to do both due to condition of if statement
-				parallel_for(blocked_range<size_t>(0, dst.rows), OuterRows(dst, a, b));
+				parallel_for(blocked_range<size_t>(0, dst.rows), ParallelTing(dst, a, b));
 			}
 			else
 			{
