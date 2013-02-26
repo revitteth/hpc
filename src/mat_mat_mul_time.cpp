@@ -1,6 +1,7 @@
 #include "mat_mat_mul.hpp"
 #include "mat_mat_mul_tbb.hpp"
 #include "mat_mat_mul_opt.hpp"
+#include "mat_mat_mul_seq.hpp"
 
 #include "tbb/tick_count.h"
 
@@ -16,7 +17,7 @@ int main(int argc, char *argv[])
 		n=atoi(argv[1]);
 		
 	local_mat_t A(n,n), B(n,n);
-	local_mat_t R_orig(n,n), R_tbb(n,n), R_opt(n,n);
+	local_mat_t R_orig(n,n), R_tbb(n,n), R_opt(n,n), R_seq(n,n);
 	
 	A.randomise();
 	//A.dump(std::cout);
@@ -42,6 +43,12 @@ int main(int argc, char *argv[])
 	tick_count end_opt = tick_count::now();
 	double opt_time = (end_opt - start_opt).seconds();
 
+	// sequential
+	tick_count start_seq = tick_count::now();
+	mat_mat_mul_seq(R_seq, A, B);
+	tick_count end_seq = tick_count::now();
+	double seq_time = (end_seq - start_seq).seconds();
+
 	// Check for errors in output
 	for (unsigned row = 0; row < R_orig.rows; row++)
 	{
@@ -55,6 +62,10 @@ int main(int argc, char *argv[])
 			{
 				cout << "error in optimised tbb code" << endl;
 			}
+			if (abs(R_seq.at(row, col) - R_orig.at(row, col)) > 0.01)
+			{
+				cout << "error in sequential code" << endl;
+			}
 		}
 	}
 
@@ -63,6 +74,7 @@ int main(int argc, char *argv[])
 	cout << original_time << endl;
 	cout << tbb_time << endl;
 	cout << opt_time << endl;
+	cout << seq_time << endl;
 
 
 	// hold console open
