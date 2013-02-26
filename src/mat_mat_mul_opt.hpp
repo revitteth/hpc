@@ -6,6 +6,25 @@
 
 using namespace tbb;
 
+struct ParallelInnerLoop
+{
+	private : 
+		mat_t *dst, *right;
+		unsigned row;
+
+	public :
+			ParallelInnerLoop(mat_t *dst, mat_t *right, unsigned row) : dst(dst), right(right), row(row) {}
+
+			void operator() (const blocked_range<size_t>& r) const
+			{
+				for (size_t col = r.begin(); col != r.end(); ++col)
+				{
+					dst->at(row,col) += right->at(row, col);
+				}
+			}
+
+};
+
 struct ParallelOuterLoop
 {
 	private :
@@ -19,10 +38,7 @@ struct ParallelOuterLoop
 		{
 			for(size_t row = r.begin(); row != r.end(); ++row)
 			{
-				for(unsigned col=0;col<dst->cols;col++)
-				{
-					dst->at(row,col) += right->at(row,col);
-				}
+				parallel_for(blocked_range<size_t>(0, dst->cols), ParallelInnerLoop(dst, right, row));
 			}
 		}
 };
