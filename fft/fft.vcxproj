@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\cores.hpp" />
     <ClInclude Include="..\src\fft.hpp" />
     <ClInclude Include="..\src\fft_opt.hpp" />
     <ClInclude Include="..\src\fft_tbb.hpp" />

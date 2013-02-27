@@ -3,6 +3,7 @@
 
 #include "mat_t.hpp"
 #include "tbb/tbb.h"
+#include "cores.hpp"
 
 using namespace tbb;
 
@@ -98,6 +99,7 @@ class MatMatMulOpt : public task
 
 void mat_mat_mul_opt(mat_t dst, mat_t a, mat_t b)
 {
+	task_scheduler_init init(CoresInformation::getCores());
 	MatMatMulOpt &taskRoot = *new (task::allocate_root()) MatMatMulOpt(dst,a,b);
 	task::spawn_root_and_wait(taskRoot);
 }

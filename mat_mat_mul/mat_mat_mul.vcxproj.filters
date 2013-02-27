@@ -34,5 +34,8 @@
     <ClInclude Include="..\src\mat_mat_mul_seq.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\cores.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@
 
 #include "mat_t.hpp"
 #include "tbb\tbb.h"
+#include "cores.hpp"
 
 using namespace tbb;
 
@@ -67,6 +68,7 @@ class MatMatMulTbb : public tbb::task
 
 void mat_mat_mul_tbb(mat_t dst, mat_t a, mat_t b)
 {
+	task_scheduler_init init(CoresInformation::getCores());
 	MatMatMulTbb &taskRoot = *new (task::allocate_root()) MatMatMulTbb(dst,a,b);
 	task::spawn_root_and_wait(taskRoot);
 }

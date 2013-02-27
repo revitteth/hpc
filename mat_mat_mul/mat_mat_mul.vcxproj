@@ -15,6 +15,7 @@
     <ClCompile Include="..\src\mat_mat_mul_time.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\cores.hpp" />
     <ClInclude Include="..\src\mat_mat_mul.hpp" />
     <ClInclude Include="..\src\mat_mat_mul_opt.hpp" />
     <ClInclude Include="..\src\mat_mat_mul_seq.hpp" />

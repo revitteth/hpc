@@ -10,6 +10,7 @@ int main(int argc, char *argv[])
 {
 	if(argc!=2){
 		std::cerr<<"Must specify n.\n";
+		std::cin.get(); // hold open terminal
 		return 1;
 	}
 	int n=atoi(argv[1]);
@@ -26,6 +27,8 @@ int main(int argc, char *argv[])
 	for(int i=0;i<tmp.size();i++){
 		fprintf(stdout, "dist(%d->%d) = %d\n", start, i, tmp[i]);
 	}
+
+	std::cin.get();
 	
 	return 0;
 }

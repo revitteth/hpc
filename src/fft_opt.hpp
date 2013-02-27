@@ -3,6 +3,7 @@
 
 #include <complex>
 #include <tbb/tbb.h>
+#include "cores.hpp"
 
 using namespace tbb;
 using namespace std;
@@ -90,6 +91,7 @@ void fft_opt(int n, const complex<double> *pIn, complex<double> *pOut)
 	const double pi2=6.283185307179586476925286766559;
 	double angle = pi2/n;
 	complex<double> wn(cos(angle), sin(angle));
+	task_scheduler_init init(CoresInformation::getCores());
 	FftOpt &taskRoot = *new (task::allocate_root()) FftOpt(n, wn, pIn, 1, pOut, 1);
 	task::spawn_root_and_wait(taskRoot);
 }

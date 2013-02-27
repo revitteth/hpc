@@ -2,27 +2,30 @@
 #include "fft_tbb.hpp"
 #include "fft_opt.hpp"
 #include "fft_seq.hpp"
+#include "cores.hpp"
 #include <vector>
 #include <stdio.h>
 #include <iostream>
 
-//using namespace.std (in header)
+int CoresInformation::coresNo;
 
 int main(int argc, char *argv[])
 {
 	srand(0);
 	
-	if(argc<2){
-		fprintf(stderr, "Specify log2 of transform size.");
+	if(argc<3){
+		fprintf(stderr, "Specify log2 of transform size and number of available cores (>1)");
 		cin.get(); // let the error stay visible in the terminal!
 		exit(1);
 	}
 	
 	int log2n=atoi(argv[1]);
 	unsigned int n=1<<log2n;
+
+	CoresInformation::setCores(atoi(argv[2]));
 	
 	vector<complex<double> > in(n, 0.0), out(n), out_tbb(n), out_opt(n), out_seq(n);
-	for(int j=0;j<n;j++){
+	for(unsigned j=0;j<n;j++){
 		in[j]=complex<double>(rand()/(double)(RAND_MAX) - 0.5, rand()/(double)(RAND_MAX) - 0.5);
 	}
 
@@ -63,7 +66,7 @@ int main(int argc, char *argv[])
 		time_seq += (end_seq-start_seq).seconds();
 	}
 
-	for(int j=0;j<n;j++){
+	for(unsigned j=0;j<n;j++){
 		//fprintf(stdout, "%.16lg, %.16lg, %.16lg, %.16lg\n", real(in[j]), imag(in[j]), real(out[j]), imag(out[j]));
 		if (real(out[j]) != real(out_tbb[j]) || abs(imag(out[j]) - imag(out_tbb[j])) > 0.01)
 			cout << "error in tbb code" << endl;

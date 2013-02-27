@@ -2,19 +2,32 @@
 #include "mat_mat_mul_tbb.hpp"
 #include "mat_mat_mul_opt.hpp"
 #include "mat_mat_mul_seq.hpp"
+#include "cores.hpp"
 
 #include "tbb/tick_count.h"
 
 using namespace tbb;
 using namespace std;
 
+int CoresInformation::coresNo;
+
 int main(int argc, char *argv[])
 {
 	srand(0);
 	
 	int n=8;
-	if(argc>1)
+	if(argc>2)
+	{
 		n=atoi(argv[1]);
+		CoresInformation::setCores(atoi(argv[2]));
+	}
+	else
+	{
+		cout << "please enter n (size of matrix) and number of cpus" << endl;
+		cin.get();
+		return 1;
+	}
+
 		
 	local_mat_t A(n,n), B(n,n);
 	local_mat_t R_orig(n,n), R_tbb(n,n), R_opt(n,n), R_seq(n,n);
