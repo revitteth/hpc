@@ -3,22 +3,24 @@
 #include <stdio.h>
 #include <iostream>
 
+using namespace std;
+
 int main(int argc, char *argv[])
 {
 	srand(0);
 	
 	if(argc<2){
 		fprintf(stderr, "Specify log2 of transform size.");
-		std::cin.get(); // helps to see what the error is!
+		cin.get(); // helps to see what the error is!
 		exit(1);
 	}
 	
 	int log2n=atoi(argv[1]);
 	int n=1<<log2n;
 	
-	std::vector<std::complex<double> > in(n, 0.0), out(n);
+	vector<complex<double> > in(n, 0.0), out(n);
 	for(int j=0;j<n;j++){
-		in[j]=std::complex<double>(rand()/(double)(RAND_MAX) - 0.5, rand()/(double)(RAND_MAX) - 0.5);
+		in[j]=complex<double>(rand()/(double)(RAND_MAX) - 0.5, rand()/(double)(RAND_MAX) - 0.5);
 	}
 	
 	fft(n, &in[0], &out[0]);
@@ -27,7 +29,7 @@ int main(int argc, char *argv[])
 		fprintf(stdout, "%.16lg, %.16lg, %.16lg, %.16lg\n", real(in[j]), imag(in[j]), real(out[j]), imag(out[j]));
 	}
 
-	std::cin.get();
+	cin.get();
 	
 	/* To test this, you can try loading the output into matlab. Load
 		the output as a four column matrix x. Then the input is:
