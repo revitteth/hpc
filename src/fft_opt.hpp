@@ -28,7 +28,6 @@ struct ParallelLoop
 					(*w) = (*w)*(*wn);
 				}
 			}
-
 };
 
 /* Does a recursive FFT

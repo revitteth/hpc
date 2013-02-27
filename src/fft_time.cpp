@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <iostream>
 
-using namespace std;
+//using namespace.std (in header)
 
 int main(int argc, char *argv[])
 {
@@ -19,35 +19,61 @@ int main(int argc, char *argv[])
 	}
 	
 	int log2n=atoi(argv[1]);
-	int n=1<<log2n;
+	unsigned int n=1<<log2n;
 	
-	vector<complex<double> > in(n, 0.0), out(n), out_tbb(n), out_opt(n);
+	vector<complex<double> > in(n, 0.0), out(n), out_tbb(n), out_opt(n), out_seq(n);
 	for(int j=0;j<n;j++){
 		in[j]=complex<double>(rand()/(double)(RAND_MAX) - 0.5, rand()/(double)(RAND_MAX) - 0.5);
 	}
 
-	tick_count start_fft = tick_count::now();
-	fft(n, &in[0], &out[0]);
-	tick_count end_fft = tick_count::now();
+	double time_fft(0), time_tbb(0), time_opt(0), time_seq(0);
+	int count = 10;
+	int count_fft, count_tbb, count_opt, count_seq;
+	count_fft = count_tbb = count_opt = count_seq = count;
 
-	tick_count start_tbb = tick_count::now();
-	fft_tbb(n, &in[0], &out_tbb[0]);
-	tick_count end_tbb = tick_count::now();
+	for(int i = 0; i < count; i++)
+	{
+		tick_count start_fft = tick_count::now();
+		fft(n, &in[0], &out[0]);
+		tick_count end_fft = tick_count::now();
+		time_fft += (end_fft-start_fft).seconds();
+	}
 
-	tick_count start_opt = tick_count::now();
-	fft_opt(n, &in[0], &out_opt[0]);
-	tick_count end_opt = tick_count::now();
+	for(int i = 0; i < count; i++)
+	{
+		tick_count start_tbb = tick_count::now();
+		fft_tbb(n, &in[0], &out_tbb[0]);
+		tick_count end_tbb = tick_count::now();
+		time_tbb += (end_tbb-start_tbb).seconds();
+	}
+
+	for(int i = 0; i < count; i++)
+	{
+		tick_count start_opt = tick_count::now();
+		fft_opt(n, &in[0], &out_opt[0]);
+		tick_count end_opt = tick_count::now();
+		time_opt += (end_opt-start_opt).seconds();
+	}
 	
+	for(int i = 0; i < count; i++)
+	{
+		tick_count start_seq = tick_count::now();
+		fft_seq(n, &in[0], &out_seq[0]);
+		tick_count end_seq = tick_count::now();
+		time_seq += (end_seq-start_seq).seconds();
+	}
+
 	for(int j=0;j<n;j++){
 		//fprintf(stdout, "%.16lg, %.16lg, %.16lg, %.16lg\n", real(in[j]), imag(in[j]), real(out[j]), imag(out[j]));
-		if (real(out[j]) != real(out_tbb[j]) || imag(out[j]) != imag(out_tbb[j]))
+		if (real(out[j]) != real(out_tbb[j]) || abs(imag(out[j]) - imag(out_tbb[j])) > 0.01)
 			cout << "error in tbb code" << endl;
-		if (real(out[j]) != real(out_opt[j]) || imag(out[j]) != imag(out_opt[j]))
+		if (real(out[j]) != real(out_opt[j]) || abs(imag(out[j]) - imag(out_opt[j])) > 0.01)
 			cout << "error in opt code" << endl;
 	}
-	cout << (end_fft-start_fft).seconds()/100000 << endl;
-	cout << (end_tbb-start_tbb).seconds()/100000 << endl;
-	cout << (end_opt-start_opt).seconds()/100000 << endl;
+	cout << time_fft/count << endl;
+	cout << time_tbb/count << endl;
+	cout << time_opt/count << endl;
+	cout << time_seq/count << endl;
 	cin.get();
 	
 	/* To test this, you can try loading the output into matlab. Load

@@ -79,9 +79,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\src\graph_distance.hpp" />
+    <ClInclude Include="..\src\graph_distance_opt.hpp" />
+    <ClInclude Include="..\src\graph_distance_seq.hpp" />
+    <ClInclude Include="..\src\graph_distance_tbb.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\graph_distance_run.cpp" />
+    <ClCompile Include="..\src\graph_distance_time.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
