@@ -14,7 +14,7 @@
     <ClInclude Include="..\src\fft.hpp" />
     <ClInclude Include="..\src\fft_opt.hpp" />
     <ClInclude Include="..\src\fft_tbb.hpp" />
-    <ClInclude Include="..\src\ftt_seq.hpp" />
+    <ClInclude Include="..\src\fft_seq.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\fft_run.cpp" />

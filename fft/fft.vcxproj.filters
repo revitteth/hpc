@@ -20,7 +20,7 @@
     <ClInclude Include="..\src\fft_opt.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\ftt_seq.hpp">
+    <ClInclude Include="..\src\fft_seq.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
