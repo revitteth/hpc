@@ -63,7 +63,6 @@ void fft_opt(int n, const std::complex<double> *pIn, std::complex<double> *pOut)
 	const double pi2=6.283185307179586476925286766559;
 	double angle = pi2/n;
 	std::complex<double> wn(cos(angle), sin(angle));
-	//task
 	FftTbb &taskRoot = *new (task::allocate_root()) FftTbb(n, wn, pIn, 1, pOut, 1);
 	task::spawn_root_and_wait(taskRoot);
 }

@@ -1,6 +1,7 @@
 #include "fft.hpp"
 #include <vector>
 #include <stdio.h>
+#include <iostream>
 
 int main(int argc, char *argv[])
 {
@@ -8,6 +9,7 @@ int main(int argc, char *argv[])
 	
 	if(argc<2){
 		fprintf(stderr, "Specify log2 of transform size.");
+		std::cin.get(); // helps to see what the error is!
 		exit(1);
 	}
 	
@@ -24,6 +26,8 @@ int main(int argc, char *argv[])
 	for(int j=0;j<n;j++){
 		fprintf(stdout, "%.16lg, %.16lg, %.16lg, %.16lg\n", real(in[j]), imag(in[j]), real(out[j]), imag(out[j]));
 	}
+
+	std::cin.get();
 	
 	/* To test this, you can try loading the output into matlab. Load
 		the output as a four column matrix x. Then the input is:
