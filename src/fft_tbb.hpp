@@ -55,10 +55,11 @@ class FftTbb : public task
 				  w = w*wn;
 				}
 			}
+			return NULL;
 		}
 };
 	
-void fft_opt(int n, const std::complex<double> *pIn, std::complex<double> *pOut)
+void fft_tbb(int n, const std::complex<double> *pIn, std::complex<double> *pOut)
 {
 	const double pi2=6.283185307179586476925286766559;
 	double angle = pi2/n;
