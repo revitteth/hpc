@@ -38,36 +38,51 @@ int main(int argc, char *argv[])
 	B.randomise();
 	//B.dump(std::cout);
 	
-	// original code
-	tick_count start_orig = tick_count::now();
-	mat_mat_mul(R_orig, A, B);
-	tick_count end_orig = tick_count::now();
-	double original_time = (end_orig - start_orig).seconds();
+
+	double time_orig(0), time_tbb(0), time_opt(0), time_seq(0);
+	int count = 10;
+	int count_orig, count_tbb, count_opt, count_seq;
+	count_orig = count_tbb = count_opt = count_seq = count;
+
+	// original
+	for(int i = 0; i < count; i++)
+	{
+		tick_count start_orig = tick_count::now();
+		mat_mat_mul(R_orig, A, B);
+		tick_count end_orig = tick_count::now();
+		time_orig += (end_orig-start_orig).seconds();
+	}
+	cout << time_orig/count << endl;
 
 	// tbb enabled
-	tick_count start_tbb = tick_count::now();
-	mat_mat_mul_tbb(R_tbb, A, B);
-	tick_count end_tbb = tick_count::now();
-	double tbb_time = (end_tbb - start_tbb).seconds();
+	for(int i = 0; i < count; i++)
+	{
+		tick_count start_tbb = tick_count::now();
+		mat_mat_mul_tbb(R_tbb, A, B);
+		tick_count end_tbb = tick_count::now();
+		time_tbb += (end_tbb-start_tbb).seconds();
+	}	
+	cout << time_tbb/count << endl;
 
 	// tbb optimised
-	tick_count start_opt = tick_count::now();
-	for (int i = 0; i < 100; i++)
+	for(int i = 0; i < count; i++)
+	{
+		tick_count start_opt = tick_count::now();
 		mat_mat_mul_opt(R_opt, A, B);
-	tick_count end_opt = tick_count::now();
-	double opt_time = (end_opt - start_opt).seconds()/100;
+		tick_count end_opt = tick_count::now();
+		time_opt += (end_opt-start_opt).seconds();
+	}
+	cout << time_opt/count << endl;
 
 	// sequential
-	tick_count start_seq = tick_count::now();
-	for (int i = 0; i < 100; i++)
+	for(int i = 0; i < count; i++)
+	{
+		tick_count start_seq = tick_count::now();
 		mat_mat_mul_seq(R_seq, A, B);
-	tick_count end_seq = tick_count::now();
-	double seq_time = (end_seq - start_seq).seconds()/100;
-
-	cout << original_time << endl;
-	cout << tbb_time << endl;
-	cout << opt_time << endl;
-	cout << seq_time << endl;
+		tick_count end_seq = tick_count::now();
+		time_seq += (end_seq-start_seq).seconds();
+	}
+	cout << time_seq/count << endl;
 
 	// Check for errors in output
 	for (unsigned row = 0; row < R_orig.rows; row++)

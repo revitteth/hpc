@@ -34,6 +34,7 @@ int main(int argc, char *argv[])
 	int count_fft, count_tbb, count_opt, count_seq;
 	count_fft = count_tbb = count_opt = count_seq = count;
 
+	// original
 	for(int i = 0; i < count; i++)
 	{
 		tick_count start_fft = tick_count::now();
@@ -41,7 +42,9 @@ int main(int argc, char *argv[])
 		tick_count end_fft = tick_count::now();
 		time_fft += (end_fft-start_fft).seconds();
 	}
+	cout << time_fft/count << endl;
 
+	// tbb enabled
 	for(int i = 0; i < count; i++)
 	{
 		tick_count start_tbb = tick_count::now();
@@ -49,7 +52,9 @@ int main(int argc, char *argv[])
 		tick_count end_tbb = tick_count::now();
 		time_tbb += (end_tbb-start_tbb).seconds();
 	}
+	cout << time_tbb/count << endl;
 
+	// tbb optimised
 	for(int i = 0; i < count; i++)
 	{
 		tick_count start_opt = tick_count::now();
@@ -57,7 +62,9 @@ int main(int argc, char *argv[])
 		tick_count end_opt = tick_count::now();
 		time_opt += (end_opt-start_opt).seconds();
 	}
+	cout << time_opt/count << endl;
 	
+	// sequential
 	for(int i = 0; i < count; i++)
 	{
 		tick_count start_seq = tick_count::now();
@@ -65,18 +72,17 @@ int main(int argc, char *argv[])
 		tick_count end_seq = tick_count::now();
 		time_seq += (end_seq-start_seq).seconds();
 	}
+	cout << time_seq/count << endl;
 
+	// check outputs were all the same as the original code
 	for(unsigned j=0;j<n;j++){
-		//fprintf(stdout, "%.16lg, %.16lg, %.16lg, %.16lg\n", real(in[j]), imag(in[j]), real(out[j]), imag(out[j]));
 		if (real(out[j]) != real(out_tbb[j]) || abs(imag(out[j]) - imag(out_tbb[j])) > 0.01)
 			cout << "error in tbb code" << endl;
 		if (real(out[j]) != real(out_opt[j]) || abs(imag(out[j]) - imag(out_opt[j])) > 0.01)
 			cout << "error in opt code" << endl;
 	}
-	cout << time_fft/count << endl;
-	cout << time_tbb/count << endl;
-	cout << time_opt/count << endl;
-	cout << time_seq/count << endl;
+
+	// hold terminal (windows)
 	cin.get();
 	
 	/* To test this, you can try loading the output into matlab. Load
