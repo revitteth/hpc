@@ -12,9 +12,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\fft.hpp" />
+    <ClInclude Include="..\src\fft_opt.hpp" />
+    <ClInclude Include="..\src\fft_tbb.hpp" />
+    <ClInclude Include="..\src\ftt_seq.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\fft_run.cpp" />
+    <ClCompile Include="..\src\fft_time.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{CD2DA033-2C35-4C07-9BB4-04FFB17A2059}</ProjectGuid>

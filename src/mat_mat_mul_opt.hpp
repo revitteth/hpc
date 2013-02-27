@@ -53,11 +53,11 @@ class MatMatMulOpt : public task
 
 		MatMatMulOpt(mat_t dst, const mat_t a, const mat_t b) : dst(dst), a(a), b(b) {} 
 
-		// Task containing functionality
 		task* execute(void)
 		{
 			if((dst.rows<=128) || (dst.cols<=128))
 			{
+				// make parallel if bigger than certain value? Is it even worth it in terms of a speed up?
 				for(unsigned row=0;row<dst.rows;row++)
 				{
 					for(unsigned col=0;col<dst.cols;col++)
@@ -90,7 +90,6 @@ class MatMatMulOpt : public task
 				
 				spawn_and_wait_for_all(tasks);
 
-				// paralellise both these as they could both be large (use same if statements as above!)
 				parallel_for(blocked_range<size_t>(0, dst.rows), ParallelOuterLoop(&dst, &right));
 			}
 			return NULL;

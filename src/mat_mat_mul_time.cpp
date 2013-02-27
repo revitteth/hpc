@@ -27,15 +27,13 @@ int main(int argc, char *argv[])
 	
 	// original code
 	tick_count start_orig = tick_count::now();
-	//for (int i = 0; i < 10; i++)
-		mat_mat_mul(R_orig, A, B);
+	mat_mat_mul(R_orig, A, B);
 	tick_count end_orig = tick_count::now();
 	double original_time = (end_orig - start_orig).seconds();
 
 	// tbb enabled
 	tick_count start_tbb = tick_count::now();
-	//for (int i = 0; i < 10; i++)
-		mat_mat_mul_tbb(R_tbb, A, B);
+	mat_mat_mul_tbb(R_tbb, A, B);
 	tick_count end_tbb = tick_count::now();
 	double tbb_time = (end_tbb - start_tbb).seconds();
 
@@ -48,10 +46,15 @@ int main(int argc, char *argv[])
 
 	// sequential
 	tick_count start_seq = tick_count::now();
-	//for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 100; i++)
 		mat_mat_mul_seq(R_seq, A, B);
 	tick_count end_seq = tick_count::now();
-	double seq_time = (end_seq - start_seq).seconds();
+	double seq_time = (end_seq - start_seq).seconds()/100;
+
+	cout << original_time << endl;
+	cout << tbb_time << endl;
+	cout << opt_time << endl;
+	cout << seq_time << endl;
 
 	// Check for errors in output
 	for (unsigned row = 0; row < R_orig.rows; row++)
@@ -74,12 +77,6 @@ int main(int argc, char *argv[])
 	}
 
 	//R.dump(cout);
-	
-	cout << original_time << endl;
-	cout << tbb_time << endl;
-	cout << opt_time << endl;
-	cout << seq_time << endl;
-
 
 	// hold console open
 	cin.get();

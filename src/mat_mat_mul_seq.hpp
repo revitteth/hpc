@@ -16,7 +16,7 @@ class MatMatMulSeq
 		// Task containing functionality
 		void execute(void)
 		{
-			if((dst.rows==1) || (dst.cols==1))
+			if((dst.rows<=128) || (dst.cols<=128))
 			{
 				for(unsigned row=0;row<dst.rows;row++)
 				{
