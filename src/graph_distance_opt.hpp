@@ -4,35 +4,37 @@
 #include "common.hpp"
 #include "cores.hpp"
 #include <map>
+#include <iostream>
 
-void treeTraverse(const std::vector<node> *nodes, const node *nd, std::vector<node> *done, std::vector<int> *distance, int dis, int start)
+//int dis = 0;
+
+void treeTraverse(const std::vector<node> *nodes, const node *nd, std::vector<int> *distance, int dis)
 {
-	// *nd is the nodes
-	// distance is the vector of distances (initialised to maxint)
-	// dis is the number of recursive calls (i.e. distance from start)
-	// start is the starting node number
-
 	// increase recursion level (and distance from start)
 	dis++;
 
-	if((*done).size() == (*nodes).size())
+	bool stop = false;
+	// stop recursing when all nodes edge nodes don't have Int_max
+	for (int h = 0; h < (*nd).edges.size(); h++)
 	{
-		// stop recursing
-		return;
-	}
-	else
-	{
-		(*done).push_back(*nd);
-		// foreach node set its distance as the recursion depth.
-		for(int i = 0; i < (*nd).edges.size(); i++)
+		int id = (*nd).edges[h];
+		//std::cout << id << " :: :: " << (*distance)[id] << " :: :: " << stop << std::endl;
+		if((*distance)[id] != INT_MAX && (*distance)[(*nd).id] != INT_MAX)
 		{
-			(*distance)[(*nd).id] = dis;
-			treeTraverse(nodes, &(*nodes)[i], &(*done), distance, dis, start);
+			stop = true;
 		}
 	}
 
-
-	
+	if(!stop)
+	{
+		(*distance)[(*nd).id] = dis;
+		// foreach node set its distance as the recursion depth.
+		for(int i = 0; i < (*nd).edges.size(); i++)
+		{
+			treeTraverse(nodes, &(*nodes)[(*nd).edges[i]], distance, dis);
+		}
+	}
+	return;
 }
 
 /*! This is the function we are interested in the execution time of. */
@@ -40,9 +42,10 @@ void treeTraverse(const std::vector<node> *nodes, const node *nd, std::vector<no
 std::vector<int> graph_distance_opt(const std::vector<node> &nodes, int start)
 {
 	std::vector<int> distance(nodes.size(), INT_MAX); // all nodes start at infinite distance
-	std::vector<node> done(nodes.size());
+
+	const node *start_node = &nodes[start];
 	
-	treeTraverse(&nodes, &nodes[0], &done, &distance, -1, start);
+	treeTraverse(&nodes, start_node, &distance, -1);
 	
 	return distance;
 }

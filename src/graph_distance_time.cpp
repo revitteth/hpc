@@ -41,14 +41,18 @@ int main(int argc, char *argv[])
 	// run code
 	//std::vector<int> tmp=graph_distance(graph, start);
 
+	std::vector<int> tmp;
 	// original
 	for(int i = 0; i < count; i++)
 	{
 		tick_count start_orig = tick_count::now();
-		std::vector<int> tmp=graph_distance(graph, start);
+		tmp=graph_distance(graph, start);
 		tick_count end_orig = tick_count::now();
 		time_orig += (end_orig-start_orig).seconds();
 	}
+			for(unsigned i=0;i<tmp.size();i++){
+			fprintf(stdout, "dist(%d->%d) = %d\n", start, i, tmp[i]);
+		}
 	cout << time_orig/count << endl;
 
 	// tbb enabled
@@ -59,16 +63,21 @@ int main(int argc, char *argv[])
 		tick_count end_tbb = tick_count::now();
 		time_tbb += (end_tbb-start_tbb).seconds();
 	}	
+
 	cout << time_tbb/count << endl;
 
+	std::vector<int> tmp_opt;
 	// tbb optimised
 	for(int i = 0; i < count; i++)
 	{
 		tick_count start_opt = tick_count::now();
-		std::vector<int> tmp_opt = graph_distance_opt(graph, start);
+		tmp_opt = graph_distance_opt(graph, start);
 		tick_count end_opt = tick_count::now();
 		time_opt += (end_opt-start_opt).seconds();
 	}
+		for(unsigned i=0;i<tmp_opt.size();i++){
+			fprintf(stdout, "dist(%d->%d) = %d\n", start, i, tmp_opt[i]);
+		}
 	cout << time_opt/count << endl;
 
 	// sequential
