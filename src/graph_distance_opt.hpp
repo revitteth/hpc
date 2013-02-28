@@ -8,18 +8,25 @@
 
 void treeTraverse(const std::vector<node> *nodes, const node *nd, std::vector<int> *distance, int dis)
 {
-	// foreach node set its distance as the recursion depth.
+	dis++;
+
+	if((*distance)[(*nd).id] == INT_MAX)
+	{
+		(*distance)[(*nd).id] = dis;
+	}
+	else if ((*distance)[(*nd).id] > dis)
+	{
+		(*distance)[(*nd).id] = dis;
+	}
+	else 
+	{
+		dis--;
+		return;
+	}
+
 	for(int i = 0; i < (*nd).edges.size(); i++)
 	{
-		if ((*distance)[(*nd).edges[i]] == INT_MAX)
-		{
-			(*distance)[(*nd).id] = dis;
-			treeTraverse(nodes, &(*nodes)[(*nd).edges[i]], distance, dis++);
-		}
-		else
-		{
-			return;
-		}
+		treeTraverse(nodes, &(*nodes)[(*nd).edges[i]], distance, dis);
 	}
 }
 

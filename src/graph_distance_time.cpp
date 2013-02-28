@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 		time_orig += (end_orig-start_orig).seconds();
 	}
 			for(unsigned i=0;i<tmp.size();i++){
-			fprintf(stdout, "dist(%d->%d) = %d\n", start, i, tmp[i]);
+			//fprintf(stdout, "dist(%d->%d) = %d\n", start, i, tmp[i]);
 		}
 	cout << time_orig/count << endl;
 
@@ -76,7 +76,8 @@ int main(int argc, char *argv[])
 		time_opt += (end_opt-start_opt).seconds();
 	}
 		for(unsigned i=0;i<tmp_opt.size();i++){
-			fprintf(stdout, "dist(%d->%d) = %d\n", start, i, tmp_opt[i]);
+			//fprintf(stdout, "dist(%d->%d) = %d\n", start, i, tmp_opt[i]);
+			if(tmp_opt[i] != tmp[i]) { std::cout << "shit" << endl; }
 		}
 	cout << time_opt/count << endl;
 
