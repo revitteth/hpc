@@ -5,54 +5,46 @@
 #include "cores.hpp"
 #include <map>
 
+void treeTraverse(const std::vector<node> *nodes, const node *nd, std::vector<node> *done, std::vector<int> *distance, int dis, int start)
+{
+	// *nd is the nodes
+	// distance is the vector of distances (initialised to maxint)
+	// dis is the number of recursive calls (i.e. distance from start)
+	// start is the starting node number
+
+	// increase recursion level (and distance from start)
+	dis++;
+
+	if((*done).size() == (*nodes).size())
+	{
+		// stop recursing
+		return;
+	}
+	else
+	{
+		(*done).push_back(*nd);
+		// foreach node set its distance as the recursion depth.
+		for(int i = 0; i < (*nd).edges.size(); i++)
+		{
+			(*distance)[(*nd).id] = dis;
+			treeTraverse(nodes, &(*nodes)[i], &(*done), distance, dis, start);
+		}
+	}
+
+
+	
+}
 
 /*! This is the function we are interested in the execution time of. */
 // Here n is the number of nodes (nodes.size())
 std::vector<int> graph_distance_opt(const std::vector<node> &nodes, int start)
 {
 	std::vector<int> distance(nodes.size(), INT_MAX); // all nodes start at infinite distance
+	std::vector<node> done(nodes.size());
 	
-	// a list of (id,dist)
-	std::deque<std::pair<int,int> > todo;
-	todo.push_back(std::make_pair(start,0));
-
-	int nodeNo = start;
-	map<int, std::deque<std::pair<int,int> > > todo_list;
-	
-	while(todo_list.size() < nodes.size() && todo_list.size() <= (CoresInformation::getCores())){
-		std::pair<int,int> curr = todo.front();
-		todo.pop_front();
-		
-		if(distance[curr.first]==INT_MAX){
-			distance[curr.first]=curr.second;
-			for(unsigned i=0;i<nodes[curr.first].edges.size();i++){
-				todo_list[nodeNo].push_back(std::make_pair(nodes[curr.first].edges[i],curr.second+1));
-			}
-		}
-		nodeNo++;
-	}
-	// above collects n nodes worth of todo lists. Now spawn n tasks to solve those with the old method.
-
-	for(unsigned x = 0; x < todo_list.size(); x++)
-	{
-		// loop through the list of todos
-		// spawn task graph_distance_flat(*?todo_list[x], x)
-		graph_distance_flat(, );
-	}
+	treeTraverse(&nodes, &nodes[0], &done, &distance, -1, start);
 	
 	return distance;
 }
 
 #endif
-
-
-
-	// put node start,0 on the todo list
-	// get front of todo list as curr
-	// pop it (i.e. consume it)
-	// if its distance is infinite (i.e. default) set its distance (in first case = 0).
-	// go through all the nodes edges and each time push them onto the todo with the node number and the distance from previous node
-
-	// make a new todo list for each node.
-	// make a list of todo list pointers. Nodenumber, todo pointer
-	// spawn 8 tasks to tackle 8 of the todo pointers at a time.

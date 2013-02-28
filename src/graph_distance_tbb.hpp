@@ -25,7 +25,6 @@ struct ParDo {
 				}
 			}	
 		}
-		 
 };
 
 /*! This is the function we are interested in the execution time of. */

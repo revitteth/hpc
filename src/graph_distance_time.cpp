@@ -1,6 +1,6 @@
 #include "graph_distance.hpp"
 #include "graph_distance_tbb.hpp"
-//#include "graph_distance_opt.hpp"
+#include "graph_distance_opt.hpp"
 #include "graph_distance_seq.hpp"
 
 #include <stdio.h>
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
 	for(int i = 0; i < count; i++)
 	{
 		tick_count start_opt = tick_count::now();
-
+		std::vector<int> tmp_opt = graph_distance_opt(graph, start);
 		tick_count end_opt = tick_count::now();
 		time_opt += (end_opt-start_opt).seconds();
 	}
