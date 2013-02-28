@@ -8,29 +8,6 @@
 using namespace tbb;
 using namespace std;
 
-struct ParallelLoop
-{
-	private : 
-		complex<double> *w, *wn, *pOut;
-		unsigned m;
-
-	public :
-			ParallelLoop(unsigned m, complex<double> *wn, complex<double> *w, complex<double> *pOut) 
-				: m(m), wn(wn), w(w), pOut(pOut) {}
-
-			void operator() (const blocked_range<size_t>& r) const
-			{
-				for (size_t j = r.begin(); j != r.end(); ++j)
-				{
-					complex<double> t1 = (*w)*pOut[m+j];
-					complex<double> t2 = pOut[j]-t1;
-					pOut[j] = pOut[j]+t1;                 /*  pOut[j] = pOut[j] + w^i pOut[m+j] */
-					pOut[j+m] = t2;                       /*  pOut[j] = pOut[j] - w^i pOut[m+j] */
-					(*w) = (*w)*(*wn);
-				}
-			}
-};
-
 /* Does a recursive FFT
 	n = Number of elements (must be a power of two)
 	wn =  Complex root of unity of order n
@@ -71,8 +48,6 @@ class FftOpt : public task
 				spawn_and_wait_for_all(tasks);
 		 
 				complex<double> w = complex<double>(1.0, 0.0);
-
-				//parallel_for(blocked_range<size_t>(0, m), ParallelLoop(m, &wn, &w, pOut));
 
 				for (unsigned j=0;j<m;j++){
 					std::complex<double> t1 = w*pOut[m+j];
