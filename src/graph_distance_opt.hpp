@@ -6,35 +6,21 @@
 #include <map>
 #include <iostream>
 
-//int dis = 0;
-
 void treeTraverse(const std::vector<node> *nodes, const node *nd, std::vector<int> *distance, int dis)
 {
-	// increase recursion level (and distance from start)
-	dis++;
-
-	bool stop = false;
-	// stop recursing when all nodes edge nodes don't have Int_max
-	for (int h = 0; h < (*nd).edges.size(); h++)
+	// foreach node set its distance as the recursion depth.
+	for(int i = 0; i < (*nd).edges.size(); i++)
 	{
-		int id = (*nd).edges[h];
-		//std::cout << id << " :: :: " << (*distance)[id] << " :: :: " << stop << std::endl;
-		if((*distance)[id] != INT_MAX && (*distance)[(*nd).id] != INT_MAX)
+		if ((*distance)[(*nd).edges[i]] == INT_MAX)
 		{
-			stop = true;
+			(*distance)[(*nd).id] = dis;
+			treeTraverse(nodes, &(*nodes)[(*nd).edges[i]], distance, dis++);
+		}
+		else
+		{
+			return;
 		}
 	}
-
-	if(!stop)
-	{
-		(*distance)[(*nd).id] = dis;
-		// foreach node set its distance as the recursion depth.
-		for(int i = 0; i < (*nd).edges.size(); i++)
-		{
-			treeTraverse(nodes, &(*nodes)[(*nd).edges[i]], distance, dis);
-		}
-	}
-	return;
 }
 
 /*! This is the function we are interested in the execution time of. */
