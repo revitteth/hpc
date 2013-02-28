@@ -81,6 +81,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\common.hpp" />
     <ClInclude Include="..\src\cores.hpp" />
     <ClInclude Include="..\src\graph_distance.hpp" />
     <ClInclude Include="..\src\graph_distance_opt.hpp" />
