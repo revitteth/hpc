@@ -1,6 +1,6 @@
 #include "graph_distance.hpp"
 #include "graph_distance_tbb.hpp"
-#include "graph_distance_opt.hpp"
+//#include "graph_distance_opt.hpp"
 #include "graph_distance_seq.hpp"
 
 #include <stdio.h>
@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 	std::vector<node> graph = build_graph(n);
 
 	double time_orig(0), time_tbb(0), time_opt(0), time_seq(0);
-	int count = 1;
+	int count = 10;
 	int count_orig, count_tbb, count_opt, count_seq;
 	count_orig = count_tbb = count_opt = count_seq = count;
 
@@ -40,7 +40,6 @@ int main(int argc, char *argv[])
 	 
 	// run code
 	//std::vector<int> tmp=graph_distance(graph, start);
-
 
 	// original
 	for(int i = 0; i < count; i++)
