@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 	
 
 	double time_orig(0), time_tbb(0), time_opt(0), time_seq(0);
-	int count = 10;
+	int count = 1;
 	int count_orig, count_tbb, count_opt, count_seq;
 	count_orig = count_tbb = count_opt = count_seq = count;
 

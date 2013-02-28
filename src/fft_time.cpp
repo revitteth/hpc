@@ -15,7 +15,8 @@ int main(int argc, char *argv[])
 	
 	if(argc<3){
 		fprintf(stderr, "Specify log2 of transform size and number of available cores (>1)");
-		cin.get(); // let the error stay visible in the terminal!
+		// hold terminal (windows)
+		cin.get();
 		exit(1);
 	}
 	
