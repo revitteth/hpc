@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 	std::vector<node> graph = build_graph(n);
 
 	double time_orig(0), time_tbb(0), time_opt(0), time_seq(0);
-	int count = 10;
+	int count = 1;
 	int count_orig, count_tbb, count_opt, count_seq;
 	count_orig = count_tbb = count_opt = count_seq = count;
 
@@ -50,16 +50,16 @@ int main(int argc, char *argv[])
 		tick_count end_orig = tick_count::now();
 		time_orig += (end_orig-start_orig).seconds();
 	}
-			for(unsigned i=0;i<tmp.size();i++){
-			//fprintf(stdout, "dist(%d->%d) = %d\n", start, i, tmp[i]);
-		}
+	for(unsigned i=0;i<tmp.size();i++){
+		//fprintf(stdout, "dist(%d->%d) = %d\n", start, i, tmp[i]);
+	}
 	cout << time_orig/count << endl;
 
 	// tbb enabled
 	for(int i = 0; i < count; i++)
 	{
 		tick_count start_tbb = tick_count::now();
-		std::vector<int> tmp_tbb = graph_distance_tbb(graph, start);
+		//std::vector<int> tmp_tbb = graph_distance_tbb(graph, start);
 		tick_count end_tbb = tick_count::now();
 		time_tbb += (end_tbb-start_tbb).seconds();
 	}	
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 	}
 		for(unsigned i=0;i<tmp_opt.size();i++){
 			//fprintf(stdout, "dist(%d->%d) = %d\n", start, i, tmp_opt[i]);
-			if(tmp_opt[i] != tmp[i]) { std::cout << "shit" << endl; }
+			if(tmp_opt[i] != tmp[i]) { std::cout << "error" << endl; }
 		}
 	cout << time_opt/count << endl;
 
