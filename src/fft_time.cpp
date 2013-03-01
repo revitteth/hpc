@@ -25,9 +25,13 @@ int main(int argc, char *argv[])
 	int count = 1;
 	if(argv[3])
 	{
+		// facility to set number of times to run each
+		// version and take mean. Useful for scripting 
+		// of the running/data collection
 		count = atoi(argv[3]);
 	}
 
+	// Set number of cores from args
 	CoresInformation::setCores(atoi(argv[2]));
 	
 	vector<complex<double> > in(n, 0.0), out(n), out_tbb(n), out_opt(n), out_seq(n);

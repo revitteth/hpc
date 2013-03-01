@@ -6,6 +6,13 @@
 
 using namespace tbb;
 
+struct ParDoTask : public tbb::task
+{
+	private :
+		
+
+};
+
 struct ParDo {
 	private :
 		std::vector<int> *distance;

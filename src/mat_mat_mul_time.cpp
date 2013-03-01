@@ -4,7 +4,7 @@
 #include "mat_mat_mul_seq.hpp"
 #include "cores.hpp"
 
-#include "tbb/tick_count.h"
+#include "tbb/tbb.h"
 
 using namespace tbb;
 using namespace std;

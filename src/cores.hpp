@@ -1,6 +1,8 @@
 #ifndef cores_hpp
 #define cores_hpp
 
+// class with static members/methods to 
+// facilitate setting/retrieving number of cores
 class CoresInformation
 {	
 	private : 

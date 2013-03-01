@@ -7,9 +7,8 @@
 #include <iostream>
 #include <tbb/task.h>
 
-void treeTraverse(const std::vector<node> *nodes, const node *nd, std::vector<int> *distance, int dis);
-
-class TraverseTask : public tbb::task {
+class TraverseTask : public tbb::task 
+{
 	
 	private:
 		const std::vector<node> *nodes;
@@ -46,6 +45,7 @@ class TraverseTask : public tbb::task {
 
 			for(unsigned i = 0; i < (*nd).edges.size(); i++)
 			{
+				// recurse through all child nodes
 				tList.push_back(*new (tbb::task::allocate_child()) TraverseTask(nodes, &(*nodes)[(*nd).edges[i]], distance, dis));
 			}
 			
@@ -64,7 +64,6 @@ std::vector<int> graph_distance_opt(const std::vector<node> &nodes, int start)
 
 	const node *start_node = &nodes[start];
 	
-	//treeTraverse(&nodes, start_node, &distance, -1);
 	task_scheduler_init init(CoresInformation::getCores());
 	TraverseTask &root = *new(tbb::task::allocate_root()) TraverseTask(&nodes, start_node, &distance, -1);
 	tbb::task::spawn_root_and_wait(root);

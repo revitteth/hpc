@@ -2,7 +2,7 @@
 #define mat_mat_mul_tbb_hpp
 
 #include "mat_t.hpp"
-#include "tbb\tbb.h"
+#include "tbb/tbb.h"
 #include "cores.hpp"
 
 using namespace tbb;

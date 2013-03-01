@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
 	for(int i = 0; i < count; i++)
 	{
 		tick_count start_seq = tick_count::now();
-		//tmp_seq = graph_distance_seq(graph, start);
+		tmp_seq = graph_distance_seq(graph, start);
 		tick_count end_seq = tick_count::now();
 		time_seq += (end_seq-start_seq).seconds();
 	}

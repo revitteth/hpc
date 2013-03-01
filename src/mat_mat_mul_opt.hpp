@@ -7,6 +7,7 @@
 
 using namespace tbb;
 
+// Parallelisation of the inner first loop
 struct FirstParallelInnerLoop
 {
 	private : 
@@ -31,6 +32,7 @@ struct FirstParallelInnerLoop
 
 };
 
+// Parallelisation of the outer first loop
 struct FirstParallelOuterLoop
 {
 	private :
@@ -49,6 +51,7 @@ struct FirstParallelOuterLoop
 		}
 };
 
+// Parallelisation of the last inner loop
 struct ParallelInnerLoop
 {
 	private : 
@@ -68,6 +71,7 @@ struct ParallelInnerLoop
 
 };
 
+// Parallelisation of the last outer loop
 struct ParallelOuterLoop
 {
 	private :
@@ -100,6 +104,7 @@ class MatMatMulOpt : public task
 		{
 			if((dst.rows<=128) || (dst.cols<=128))
 			{
+				// use structs. above to perform parallel for loop
 				parallel_for(blocked_range<size_t>(0, dst.rows), FirstParallelOuterLoop(&dst, &a, &b));
 			}
 			else
@@ -108,7 +113,8 @@ class MatMatMulOpt : public task
 				set_ref_count(9); // number of tasks on list + root task
 
 				local_mat_t right(dst.rows, dst.cols);
-		
+				
+				// create tasks
 				tasks.push_back(*new (task::allocate_child()) MatMatMulOpt(dst.quad(0,0), a.quad(0,0), b.quad(0,0)));
 				tasks.push_back(*new (task::allocate_child()) MatMatMulOpt(dst.quad(0,1), a.quad(0,0), b.quad(0,1)));
 				tasks.push_back(*new (task::allocate_child()) MatMatMulOpt(dst.quad(1,0), a.quad(1,0), b.quad(0,0)));
@@ -121,6 +127,7 @@ class MatMatMulOpt : public task
 				
 				spawn_and_wait_for_all(tasks);
 
+				// use structs above to perform parallel for loop
 				parallel_for(blocked_range<size_t>(0, dst.rows), ParallelOuterLoop(&dst, &right));
 			}
 			return NULL;
@@ -131,6 +138,7 @@ void mat_mat_mul_opt(mat_t dst, mat_t a, mat_t b)
 {
 	task_scheduler_init init(CoresInformation::getCores());
 	MatMatMulOpt &taskRoot = *new (task::allocate_root()) MatMatMulOpt(dst,a,b);
+	// wait for root task
 	task::spawn_root_and_wait(taskRoot);
 }
 

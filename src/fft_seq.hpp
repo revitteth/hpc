@@ -43,8 +43,6 @@ class FftSeq
 
 				complex<double> w = complex<double>(1.0, 0.0);
 
-				//parallel_for(blocked_range<size_t>(0, m), ParallelLoop(m, &wn, &w, pOut));
-
 				for (unsigned j=0;j<m;j++){
 					std::complex<double> t1 = w*pOut[m+j];
 					std::complex<double> t2 = pOut[j]-t1;

@@ -84,10 +84,10 @@
   <ItemGroup>
     <ClInclude Include="..\src\common.hpp" />
     <ClInclude Include="..\src\cores.hpp" />
-    <ClInclude Include="..\src\graph_distance.hpp" />
     <ClInclude Include="..\src\graph_distance_opt.hpp" />
     <ClInclude Include="..\src\graph_distance_seq.hpp" />
     <ClInclude Include="..\src\graph_distance_tbb.hpp" />
+    <ClInclude Include="graph_distance_opt.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\graph_distance_run.cpp" />

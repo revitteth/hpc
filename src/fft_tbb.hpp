@@ -41,6 +41,7 @@ class FftTbb : public task
 				task_list tasks;
 				set_ref_count(3);
 
+				// create tasks
 				tasks.push_back(*new (task::allocate_child()) FftTbb(m,wn*wn,pIn,2*sIn,pOut,sOut));
 				tasks.push_back(*new (task::allocate_child()) FftTbb(m,wn*wn,pIn+sIn,2*sIn,pOut+sOut*m,sOut));
 
@@ -67,6 +68,7 @@ void fft_tbb(int n, const std::complex<double> *pIn, std::complex<double> *pOut)
 	std::complex<double> wn(cos(angle), sin(angle));
 	task_scheduler_init init(CoresInformation::getCores());
 	FftTbb &taskRoot = *new (task::allocate_root()) FftTbb(n, wn, pIn, 1, pOut, 1);
+	// wait for root task to finish
 	task::spawn_root_and_wait(taskRoot);
 }
 
