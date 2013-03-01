@@ -44,7 +44,7 @@ class TraverseTask : public tbb::task {
 
 			tbb::task_list tList;
 
-			for(int i = 0; i < (*nd).edges.size(); i++)
+			for(unsigned i = 0; i < (*nd).edges.size(); i++)
 			{
 				tList.push_back(*new (tbb::task::allocate_child()) TraverseTask(nodes, &(*nodes)[(*nd).edges[i]], distance, dis));
 			}

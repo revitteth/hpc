@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 	count_orig = count_tbb = count_opt = count_seq = count;
 
 	// The run-time can vary, depending on where you start from. How should you
-	// take that into account when timing it? (use same start for each test)
+	// take that into account when timing it? (use same start for each algorithm)
 	int start=rand()%n;
 
 	// original

@@ -7,6 +7,48 @@
 
 using namespace tbb;
 
+struct FirstParallelInnerLoop
+{
+	private : 
+		mat_t *dst, *a, *b;
+		int row;
+
+	public :
+			FirstParallelInnerLoop(mat_t *dst, mat_t *a, mat_t *b, int row) : dst(dst), a(a), b(b), row(row) {}
+
+			void operator() (const blocked_range<size_t>& r) const
+			{
+				for (size_t col = r.begin(); col != r.end(); ++col)
+				{
+				double acc=0.0;
+				for(unsigned i=0;i<(*a).cols;i++)
+				{
+					acc += (*a).at(row,i) * (*b).at(i,col);
+				}
+				(*dst).at(row,col) = acc;
+				}
+			}
+
+};
+
+struct FirstParallelOuterLoop
+{
+	private :
+		mat_t *dst, *a, *b;
+
+	public :
+
+		FirstParallelOuterLoop(mat_t *dst, mat_t *a, mat_t *b) : dst(dst), a(a), b(b) {}
+
+		void operator() (const blocked_range<size_t>& r) const
+		{
+			for(size_t row = r.begin(); row != r.end(); ++row)
+			{
+				parallel_for(blocked_range<size_t>(0, dst->cols), FirstParallelInnerLoop(dst, a, b, row));
+			}
+		}
+};
+
 struct ParallelInnerLoop
 {
 	private : 
@@ -58,19 +100,8 @@ class MatMatMulOpt : public task
 		{
 			if((dst.rows<=128) || (dst.cols<=128))
 			{
-				// make parallel if bigger than certain value? Is it even worth it in terms of a speed up?
-				for(unsigned row=0;row<dst.rows;row++)
-				{
-					for(unsigned col=0;col<dst.cols;col++)
-					{
-						double acc=0.0;
-						for(unsigned i=0;i<a.cols;i++)
-						{
-							acc += a.at(row,i) * b.at(i,col);
-						}
-						dst.at(row,col) = acc;
-					}
-				}
+				parallel_for(blocked_range<size_t>(0, dst.rows), FirstParallelOuterLoop(&dst, &a, &b));
+
 			}
 			else
 			{

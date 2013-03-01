@@ -35,10 +35,8 @@ int main(int argc, char *argv[])
 	local_mat_t R_orig(n,n), R_tbb(n,n), R_opt(n,n), R_seq(n,n);
 	
 	A.randomise();
-	//A.dump(std::cout);
 	
 	B.randomise();
-	//B.dump(std::cout);
 	
 
 	double time_orig(0), time_tbb(0), time_opt(0), time_seq(0);
@@ -104,11 +102,6 @@ int main(int argc, char *argv[])
 			}
 		}
 	}
-
-	//R.dump(cout);
-
-	// hold console open
-	cin.get();
 
 	return 0;
 }
