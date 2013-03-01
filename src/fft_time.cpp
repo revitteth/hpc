@@ -86,9 +86,6 @@ int main(int argc, char *argv[])
 		if (real(out[j]) != real(out_opt[j]) || abs(imag(out[j]) - imag(out_opt[j])) > 0.01)
 			cout << "error in opt code" << endl;
 	}
-
-	// hold terminal (windows)
-	cin.get();
 	
 	/* To test this, you can try loading the output into matlab. Load
 		the output as a four column matrix x. Then the input is:

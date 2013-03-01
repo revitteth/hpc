@@ -101,7 +101,6 @@ class MatMatMulOpt : public task
 			if((dst.rows<=128) || (dst.cols<=128))
 			{
 				parallel_for(blocked_range<size_t>(0, dst.rows), FirstParallelOuterLoop(&dst, &a, &b));
-
 			}
 			else
 			{
