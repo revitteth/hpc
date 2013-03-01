@@ -16,16 +16,18 @@ int main(int argc, char *argv[])
 	srand(0);
 	
 	int n=8;
-	if(argc>2)
-	{
-		n=atoi(argv[1]);
-		CoresInformation::setCores(atoi(argv[2]));
-	}
-	else
+	if(argc<3)
 	{
 		cout << "please enter n (size of matrix) and number of cpus" << endl;
 		cin.get();
 		return 1;
+	}
+	n=atoi(argv[1]);
+	CoresInformation::setCores(atoi(argv[2]));
+	int count = 1;
+	if(argv[3])
+	{
+		count = atoi(argv[3]);
 	}
 
 		
@@ -40,7 +42,6 @@ int main(int argc, char *argv[])
 	
 
 	double time_orig(0), time_tbb(0), time_opt(0), time_seq(0);
-	int count = 1;
 	int count_orig, count_tbb, count_opt, count_seq;
 	count_orig = count_tbb = count_opt = count_seq = count;
 

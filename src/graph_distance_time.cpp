@@ -18,31 +18,33 @@ int CoresInformation::coresNo;
 
 int main(int argc, char *argv[])
 {
-	if(argc!=3){
+	if(argc<3){
 		std::cerr<<"Must specify n and number of cpus.\n";
-		std::cin.get(); // hold open terminal
+		// hold open terminal
+		std::cin.get();
 		return 1;
 	}
 	int n=atoi(argv[1]);
 	CoresInformation::setCores(atoi(argv[2]));
+	int count = 1;
+	if(argv[3])
+	{
+		count = atoi(argv[3]);
+	}
 	
 	// build the graph
 	std::vector<node> graph = build_graph(n);
 
 	double time_orig(0), time_tbb(0), time_opt(0), time_seq(0);
-	int count = 1;
 	int count_orig, count_tbb, count_opt, count_seq;
 	count_orig = count_tbb = count_opt = count_seq = count;
 
 	// The run-time can vary, depending on where you start from. How should you
 	// take that into account when timing it? (use same start for each test)
 	int start=rand()%n;
-	 
-	// run code
-	//std::vector<int> tmp=graph_distance(graph, start);
 
-	std::vector<int> tmp;
 	// original
+	std::vector<int> tmp;
 	for(int i = 0; i < count; i++)
 	{
 		tick_count start_orig = tick_count::now();
@@ -50,24 +52,28 @@ int main(int argc, char *argv[])
 		tick_count end_orig = tick_count::now();
 		time_orig += (end_orig-start_orig).seconds();
 	}
-	for(unsigned i=0;i<tmp.size();i++){
-		//fprintf(stdout, "dist(%d->%d) = %d\n", start, i, tmp[i]);
-	}
 	cout << time_orig/count << endl;
 
+
 	// tbb enabled
+	std::vector<int> tmp_tbb;
 	for(int i = 0; i < count; i++)
 	{
 		tick_count start_tbb = tick_count::now();
-		//std::vector<int> tmp_tbb = graph_distance_tbb(graph, start);
+		tmp_tbb = graph_distance_tbb(graph, start);
 		tick_count end_tbb = tick_count::now();
 		time_tbb += (end_tbb-start_tbb).seconds();
-	}	
+	}
 
+	// Check for output errors
+	for(unsigned i=0;i<tmp_tbb.size();i++){
+		if(tmp_tbb[i] != tmp[i]) { std::cout << "tbb error" << endl; }
+	}
 	cout << time_tbb/count << endl;
 
-	std::vector<int> tmp_opt;
+
 	// tbb optimised
+	std::vector<int> tmp_opt;
 	for(int i = 0; i < count; i++)
 	{
 		tick_count start_opt = tick_count::now();
@@ -75,21 +81,30 @@ int main(int argc, char *argv[])
 		tick_count end_opt = tick_count::now();
 		time_opt += (end_opt-start_opt).seconds();
 	}
-		for(unsigned i=0;i<tmp_opt.size();i++){
-			//fprintf(stdout, "dist(%d->%d) = %d\n", start, i, tmp_opt[i]);
-			if(tmp_opt[i] != tmp[i]) { std::cout << "error" << endl; }
-		}
+
+	// Check for output errors
+	for(unsigned i=0;i<tmp_opt.size();i++){
+		if(tmp_opt[i] != tmp[i]) { std::cout << "opt error" << endl; }
+	}
 	cout << time_opt/count << endl;
 
+
 	// sequential
+	std::vector<int> tmp_seq;
 	for(int i = 0; i < count; i++)
 	{
 		tick_count start_seq = tick_count::now();
-
+		//tmp_seq = graph_distance_seq(graph, start);
 		tick_count end_seq = tick_count::now();
 		time_seq += (end_seq-start_seq).seconds();
 	}
+
+	// Check for output errors
+	for(unsigned i=0;i<tmp_opt.size();i++){
+		if(tmp_seq[i] != tmp[i]) { std::cout << "seq error" << endl; }
+	}
 	cout << time_seq/count << endl;
+
 
 	// CHECK OUTPUTS!!!
 	//for(int i=0;i<tmp.size();i++){
@@ -98,7 +113,7 @@ int main(int argc, char *argv[])
 	
 	//dump_graph(graph);
 
-	std::cin.get();
+	//std::cin.get();
 	
 	return 0;
 }

@@ -65,6 +65,7 @@ std::vector<int> graph_distance_opt(const std::vector<node> &nodes, int start)
 	const node *start_node = &nodes[start];
 	
 	//treeTraverse(&nodes, start_node, &distance, -1);
+	task_scheduler_init init(CoresInformation::getCores());
 	TraverseTask &root = *new(tbb::task::allocate_root()) TraverseTask(&nodes, start_node, &distance, -1);
 	tbb::task::spawn_root_and_wait(root);
 
